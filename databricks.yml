@@ -1,5 +1,8 @@
 bundle:
   name: user-analytics-pipeline
+
+include:
+  - resources/jobs.yml
 targets:
   dev:
     default: true

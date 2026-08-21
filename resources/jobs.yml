@@ -1,7 +1,7 @@
 resources:
   jobs:
     user_activity_analytics:
-      name: user-activity-analytics
+      name: user-activity-analytics-job
       trigger:
         pause_status: UNPAUSED
         periodic:
