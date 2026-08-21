@@ -1,0 +1,22 @@
+resources:
+  jobs:
+    user_activity_analytics:
+      name: user-activity-analytics
+      trigger:
+        pause_status: UNPAUSED
+        periodic:
+          interval: 10
+          unit: MINUTES
+      tasks:
+        - task_key: ingest-from-kafka-to-bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/imbipin8858@gmail.com/user-activity-analytics/notebooks/aiven-kafka-test
+            source: WORKSPACE
+          environment_key: Default
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED

@@ -1,0 +1,19 @@
+bundle:
+  name: user-analytics-pipeline
+targets:
+  dev:
+    default: true
+    workspace:
+      host: https://dbc-dd57398f-77d5.cloud.databricks.com
+# targets:
+#   dev:
+#     workspace:
+#       host: https://dbc-dd57398f-77d5.cloud.databricks.com
+
+#   uat:
+#     workspace:
+#       host: https://dbc-dd57398f-77d5.cloud.databricks.com
+
+#   prod:
+#     workspace:
+#       host: https://dbc-dd57398f-77d5.cloud.databricks.com
