@@ -2,37 +2,10 @@ bundle:
   name: user-analytics-pipeline
 
 include:
-  - resources/jobs.yml
+  - resources/ingest-kafka-event-bronze.job.yml
+  - resources/publish-telemetry-message-kafka.job.yml
 targets:
   dev:
     default: true
     workspace:
       host: https://dbc-dd57398f-77d5.cloud.databricks.com
-
-variables:
-  kafka_bootstrap_servers:
-    default: "kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10670"
-
-  kafka_topic:
-    default: "user_activity_data_gen"
-
-  kafka_security_protocol:
-    default: "SSL"
-
-  kafka_cert_path:
-    default: "/Volumes/kafka/default/certs"
-
-  bronze_checkpoint_path:
-    default: "/Volumes/kafka/default/bronze/checkpoint"
-# targets:
-#   dev:
-#     workspace:
-#       host: https://dbc-dd57398f-77d5.cloud.databricks.com
-
-#   uat:
-#     workspace:
-#       host: https://dbc-dd57398f-77d5.cloud.databricks.com
-
-#   prod:
-#     workspace:
-#       host: https://dbc-dd57398f-77d5.cloud.databricks.com
