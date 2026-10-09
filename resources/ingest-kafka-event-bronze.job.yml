@@ -1,0 +1,26 @@
+resources:
+  jobs:
+    ingest_kafka_event_bronze:
+      name: ingest-kafka-event-bronze
+      trigger:
+        periodic:
+          interval: 15
+          unit: MINUTES
+      tasks:
+        - task_key: ingest-kafka-events-bronze
+          notebook_task:
+            notebook_path: ../notebooks/ingest-kafka-events-bronze.ipynb
+            base_parameters:
+              secrets_path: /Volumes/databricks_learning/custom/secrets
+              bootstrap_servers: kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10670
+              topic: power-meter-simulator
+              bronze_checkpoint_path: /Volumes/databricks_learning/custom/checkpoint/power-meter-simulator/bronze_checkpoint
+              bronze_table_name: databricks_learning.custom.power_meter_simulator_events_bronze
+      notification_settings:
+        no_alert_for_skipped_runs: true
+      email_notifications:
+        no_alert_for_skipped_runs: true
+        on_failure:
+          - imbipin8858@gmail.com
+      queue:
+        enabled: true
