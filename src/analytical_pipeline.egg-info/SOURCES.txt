@@ -1,0 +1,9 @@
+README.md
+setup.py
+src/analytical_pipeline/__init__.py
+src/analytical_pipeline.egg-info/PKG-INFO
+src/analytical_pipeline.egg-info/SOURCES.txt
+src/analytical_pipeline.egg-info/dependency_links.txt
+src/analytical_pipeline.egg-info/top_level.txt
+src/analytical_pipeline/utils/__init__.py
+src/analytical_pipeline/utils/get_aiven_schema.py
