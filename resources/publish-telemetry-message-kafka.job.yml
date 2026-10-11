@@ -1,24 +1,34 @@
 resources:
   jobs:
     publish-telemetry-to-kafka:
-      name: publish-telemetry-to-kafka
+      name: "${bundle.target}-publish-telemetry-to-kafka"
       trigger:
         periodic:
           interval: 15
-          unit: MINUTES
+          unit: DAYS
       tasks:
         - task_key: publish-telemetry-to-kafka
           notebook_task:
             notebook_path: ../notebooks/publish-telemetry-messages-to-kafka.ipynb
             base_parameters:
-              secrets_path: /Volumes/databricks_learning/custom/secrets
-              bootstrap_servers: kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10670
-              topic: power-meter-simulator
-              iot_raw_table_name: databricks_learning.custom.iot_raw_measurements
+              iot_raw_table_name: ${var.iot_raw_table_name}
+              secrets_path: ${var.secrets_path}
+              bootstrap_servers: ${var.bootstrap_servers}
+              topic: ${var.topic}
+              schema_registry_url: ${var.schema_registry_url}
+              power_meter_key_schema_name: ${var.power_meter_key_schema_name}
+              power_meter_value_schema_name: ${var.power_meter_value_schema_name}
+          environment_key: default
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: '4'
+            dependencies:
+              - ${workspace.artifact_path}/.internal/analytical_pipeline-0.0.1-py3-none-any.whl
       notification_settings:
         no_alert_for_skipped_runs: true
       email_notifications:
-        no_alert_for_skipped_runs: true
         on_failure:
           - imbipin8858@gmail.com
       queue:

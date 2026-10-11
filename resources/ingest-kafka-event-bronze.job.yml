@@ -1,26 +1,33 @@
 resources:
   jobs:
     ingest_kafka_event_bronze:
-      name: ingest-kafka-event-bronze
+      name: "${bundle.target}-ingest-kafka-event-bronze"
+
       trigger:
         periodic:
           interval: 15
-          unit: MINUTES
+          unit: DAYS
+
       tasks:
         - task_key: ingest-kafka-events-bronze
+
           notebook_task:
             notebook_path: ../notebooks/ingest-kafka-events-bronze.ipynb
+
             base_parameters:
-              secrets_path: /Volumes/databricks_learning/custom/secrets
-              bootstrap_servers: kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10670
-              topic: power-meter-simulator
-              bronze_checkpoint_path: /Volumes/databricks_learning/custom/checkpoint/power-meter-simulator/bronze_checkpoint
-              bronze_table_name: databricks_learning.custom.power_meter_simulator_events_bronze
-      notification_settings:
-        no_alert_for_skipped_runs: true
-      email_notifications:
-        no_alert_for_skipped_runs: true
-        on_failure:
-          - imbipin8858@gmail.com
-      queue:
-        enabled: true
+              secrets_path: ${var.secrets_path}
+              bootstrap_servers: ${var.bootstrap_servers}
+              topic: ${var.topic}
+              bronze_checkpoint_path: ${var.bronze_checkpoint_path}
+              bronze_table_name: ${var.bronze_table_name}
+              power_meter_key_schema_name: ${var.power_meter_key_schema_name}
+              power_meter_value_schema_name: ${var.power_meter_value_schema_name}
+              schema_registry_url: ${var.schema_registry_url}
+          environment_key: default
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: '4'
+            dependencies:
+              - ${workspace.artifact_path}/.internal/analytical_pipeline-0.0.1-py3-none-any.whl

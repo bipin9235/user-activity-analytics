@@ -4,8 +4,58 @@ bundle:
 include:
   - resources/ingest-kafka-event-bronze.job.yml
   - resources/publish-telemetry-message-kafka.job.yml
+artifacts:
+  analytics_wheel:
+    type: whl
+    path: .
+    build: python setup.py bdist_wheel
+variables:
+  secrets_path:
+    default: ''
+  topic:
+    default: ''
+  bronze_table_name:
+    default: ''
+  bootstrap_servers:
+    default: ''
+  bronze_checkpoint_path:
+    default: ''
+  iot_raw_table_name:
+    default: ''
+  schema_registry_url:
+    default: ''
+  power_meter_key_schema_name:
+    default: 'power-meter-simulator-key'
+  power_meter_value_schema_name:
+    default: 'power-meter-value'
+
 targets:
-  dev:
+  DEV:
     default: true
     workspace:
       host: https://dbc-dd57398f-77d5.cloud.databricks.com
+    variables:
+      topic: power-meter-simulator
+      bronze_table_name: databricks_learning.custom.power_meter_simulator_events_bronze
+      secrets_path: /Volumes/databricks_learning/custom/secrets
+      bootstrap_servers: kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10670
+      bronze_checkpoint_path: /Volumes/databricks_learning/custom/checkpoint/power-meter-simulator/bronze_checkpoint
+      iot_raw_table_name: databricks_learning.custom.iot_raw_measurements
+      schema_registry_url: kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10673
+      power_meter_key_schema_name: power-meter-simulator-key
+      power_meter_value_schema_name: power-meter-value
+
+  PROD:
+    workspace:
+      host: https://dbc-dd57398f-77d5.cloud.databricks.com
+    variables:
+      topic: power-meter-simulator
+      bronze_table_name: databricks_learning.prod.power_meter_simulator_events_bronze
+      secrets_path: /Volumes/databricks_learning/prod/secrets
+      bootstrap_servers: kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10670
+      bronze_checkpoint_path: /Volumes/databricks_learning/prod/checkpoint/power-meter-simulator/bronze_checkpoint
+      iot_raw_table_name: databricks_learning.prod.iot_raw_measurements
+      schema_registry_url: kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10673
+      power_meter_key_schema_name: power-meter-simulator-key
+      power_meter_value_schema_name: power-meter-value
+
