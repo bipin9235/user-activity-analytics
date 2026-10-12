@@ -4,8 +4,8 @@ resources:
       name: "${bundle.target}-publish-telemetry-to-kafka"
       trigger:
         periodic:
-          interval: 15
-          unit: DAYS
+          interval: 1
+          unit: HOURS
       tasks:
         - task_key: publish-telemetry-to-kafka
           notebook_task:

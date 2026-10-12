@@ -5,8 +5,8 @@ resources:
 
       trigger:
         periodic:
-          interval: 15
-          unit: DAYS
+          interval: 1
+          unit: HOURS
 
       tasks:
         - task_key: ingest-kafka-events-bronze
@@ -25,9 +25,28 @@ resources:
               schema_registry_url: ${var.schema_registry_url}
           environment_key: default
 
+        - task_key: telemetry-bronze-to-silver
+          depends_on:
+            - task_key: ingest-kafka-events-bronze
+          notebook_task:
+            notebook_path: ../notebooks/telemetry-bronze-to-silver.ipynb
+            base_parameters:
+              bronze_table_name: ${var.bronze_table_name}
+              reference_table_name: ${var.reference_table_name}
+              silver_table_name: ${var.silver_table_name}
+          environment_key: default
+
       environments:
         - environment_key: default
           spec:
             environment_version: '4'
             dependencies:
               - ${workspace.artifact_path}/.internal/analytical_pipeline-0.0.1-py3-none-any.whl
+
+      notification_settings:
+        no_alert_for_skipped_runs: true
+      email_notifications:
+        on_failure:
+          - imbipin8858@gmail.com
+      queue:
+        enabled: true

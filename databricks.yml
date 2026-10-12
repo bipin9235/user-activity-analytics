@@ -2,7 +2,7 @@ bundle:
   name: user-analytics-pipeline
 
 include:
-  - resources/ingest-kafka-event-bronze.job.yml
+  - resources/ingest-kafka-event-bronze-and-silver.job.yml
   - resources/publish-telemetry-message-kafka.job.yml
 artifacts:
   analytics_wheel:
@@ -15,6 +15,10 @@ variables:
   topic:
     default: ''
   bronze_table_name:
+    default: ''
+  silver_table_name:
+    default: ''
+  reference_table_name:
     default: ''
   bootstrap_servers:
     default: ''
@@ -37,6 +41,8 @@ targets:
     variables:
       topic: power-meter-simulator
       bronze_table_name: databricks_learning.custom.power_meter_simulator_events_bronze
+      silver_table_name: databricks_learning.custom.power_meter_simulator_events_silver
+      reference_table_name: databricks_learning.custom.analytical_reference_date
       secrets_path: /Volumes/databricks_learning/custom/secrets
       bootstrap_servers: kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10670
       bronze_checkpoint_path: /Volumes/databricks_learning/custom/checkpoint/power-meter-simulator/bronze_checkpoint
@@ -51,6 +57,8 @@ targets:
     variables:
       topic: power-meter-simulator
       bronze_table_name: databricks_learning.prod.power_meter_simulator_events_bronze
+      silver_table_name: databricks_learning.prod.power_meter_simulator_events_silver
+      reference_table_name: databricks_learning.prod.analytical_reference_date
       secrets_path: /Volumes/databricks_learning/prod/secrets
       bootstrap_servers: kafka-instance-bipin-data-engineering-project-1.j.aivencloud.com:10670
       bronze_checkpoint_path: /Volumes/databricks_learning/prod/checkpoint/power-meter-simulator/bronze_checkpoint
