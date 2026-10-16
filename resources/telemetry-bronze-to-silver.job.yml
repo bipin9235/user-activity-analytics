@@ -1,3 +1,0 @@
-# This file has been consolidated into ingest-kafka-event-bronze.job.yml
-# as a second task (telemetry-bronze-to-silver) with depends_on.
-# You can safely delete this file.

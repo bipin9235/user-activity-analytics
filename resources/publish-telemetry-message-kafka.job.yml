@@ -4,7 +4,7 @@ resources:
       name: "${bundle.target}-publish-telemetry-to-kafka"
       trigger:
         periodic:
-          interval: 1
+          interval: 12
           unit: HOURS
       tasks:
         - task_key: publish-telemetry-to-kafka
@@ -18,12 +18,18 @@ resources:
               schema_registry_url: ${var.schema_registry_url}
               power_meter_key_schema_name: ${var.power_meter_key_schema_name}
               power_meter_value_schema_name: ${var.power_meter_value_schema_name}
+              log_level: ${var.log_level}
+              audit_table_name: ${var.audit_table_name}
+              job_name: ${bundle.target}-publish-telemetry-to-kafka
+              task_name: publish-telemetry-to-kafka
+              duration_in_hours: '12'
+              number_of_events_per_hour: '4'
           environment_key: default
 
       environments:
         - environment_key: default
           spec:
-            environment_version: '4'
+            environment_version: '6'
             dependencies:
               - ${workspace.artifact_path}/.internal/analytical_pipeline-0.0.1-py3-none-any.whl
       notification_settings:

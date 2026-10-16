@@ -1,11 +1,11 @@
 resources:
   jobs:
     ingest_kafka_event_bronze:
-      name: "${bundle.target}-ingest-kafka-event-bronze"
+      name: "${bundle.target}-ingest-kafka-event-bronze-and-silver"
 
       trigger:
         periodic:
-          interval: 1
+          interval: 12
           unit: HOURS
 
       tasks:
@@ -23,6 +23,8 @@ resources:
               power_meter_key_schema_name: ${var.power_meter_key_schema_name}
               power_meter_value_schema_name: ${var.power_meter_value_schema_name}
               schema_registry_url: ${var.schema_registry_url}
+              log_level: ${var.log_level}
+              audit_table_name: ${var.audit_table_name}
           environment_key: default
 
         - task_key: telemetry-bronze-to-silver
@@ -34,12 +36,14 @@ resources:
               bronze_table_name: ${var.bronze_table_name}
               reference_table_name: ${var.reference_table_name}
               silver_table_name: ${var.silver_table_name}
+              log_level: ${var.log_level}
+              audit_table_name: ${var.audit_table_name}
           environment_key: default
 
       environments:
         - environment_key: default
           spec:
-            environment_version: '4'
+            environment_version: '6'
             dependencies:
               - ${workspace.artifact_path}/.internal/analytical_pipeline-0.0.1-py3-none-any.whl
 
