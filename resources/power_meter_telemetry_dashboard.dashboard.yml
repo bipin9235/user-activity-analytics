@@ -1,0 +1,8 @@
+resources:
+  dashboards:
+    power_meter_telemetry_dashboard:
+      display_name: "${bundle.target} - Power Meter Telemetry Dashboard"
+      warehouse_id: cf099c6394beeb0c
+      file_path: ../src/power_meter_telemetry_dashboard.lvdash.json
+      dataset_catalog: ${var.catalog}
+      dataset_schema: ${var.schema}

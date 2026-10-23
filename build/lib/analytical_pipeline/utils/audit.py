@@ -99,3 +99,16 @@ class AuditLogger:
               AND task_name = '{task_name}'
               AND status = 'PROCESSING'
         """)
+    def get_job_run_id(self):
+        try:
+            return (
+                dbutils.notebook.entry_point
+                .getDbutils()
+                .notebook()
+                .getContext()
+                .currentRunId()
+                .get()
+                .id()
+            )
+        except:
+            return None

@@ -4,6 +4,7 @@ bundle:
 include:
   - resources/ingest-kafka-event-bronze-and-silver.job.yml
   - resources/publish-telemetry-message-kafka.job.yml
+  - resources/power_meter_telemetry_dashboard.dashboard.yml
 artifacts:
   analytics_wheel:
     type: whl
@@ -36,6 +37,10 @@ variables:
     default: INFO
   audit_table_name:
     default: ''
+  catalog:
+    default: ''
+  schema:
+    default: ''
 
 targets:
   DEV:
@@ -56,6 +61,8 @@ targets:
       power_meter_value_schema_name: power-meter-value
       log_level: DEBUG
       audit_table_name: databricks_learning.custom.pipeline_audit
+      catalog: databricks_learning
+      schema: custom
 
   PROD:
     workspace:
@@ -74,4 +81,6 @@ targets:
       power_meter_value_schema_name: power-meter-value-schema-prod
       log_level: INFO
       audit_table_name: databricks_learning.prod.pipeline_audit
+      catalog: databricks_learning
+      schema: prod
 
