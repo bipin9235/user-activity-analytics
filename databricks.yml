@@ -59,7 +59,7 @@ targets:
 
   PROD:
     workspace:
-      host: https://dbc-dd57398f-77d5.cloud.databricks.com
+      host: https://dbc-0cf03525-d860.cloud.databricks.com
     variables:
       topic: power-meter-simulator-prod
       bronze_table_name: databricks_learning.prod.power_meter_simulator_events_bronze
