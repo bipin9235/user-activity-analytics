@@ -1,0 +1,615 @@
+{
+  "datasets": [
+    {
+      "name": "silver_telemetry",
+      "displayName": "Silver Telemetry Data",
+      "queryLines": [
+        "SELECT\n",
+        "  device_id,\n",
+        "  measurement_name,\n",
+        "  measurement_value,\n",
+        "  measurement_time,\n",
+        "  kafka_timestamp\n",
+        "FROM\n",
+        "  power_meter_simulator_events_silver"
+      ],
+      "catalog": "databricks_learning",
+      "schema": "custom"
+    }
+  ],
+  "pages": [
+    {
+      "name": "7c5d8557",
+      "displayName": "Page-1",
+      "layout": [
+        {
+          "widget": {
+            "name": "power_factor_counter",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "silver_telemetry",
+                  "fields": [
+                    {
+                      "name": "avg(measurement_value)",
+                      "expression": "AVG(`measurement_value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`measurement_name` IN ('power_factor')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "data": {
+                "queryName": "main_query"
+              },
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(measurement_value)",
+                  "style": {
+                    "fontColor": "#E53935",
+                    "rules": [
+                      {
+                        "condition": {
+                          "operand": {
+                            "type": "data-value",
+                            "value": "0.9"
+                          },
+                          "operator": ">="
+                        },
+                        "fontColor": "#43A047"
+                      },
+                      {
+                        "condition": {
+                          "operand": {
+                            "type": "data-value",
+                            "value": "0.8"
+                          },
+                          "operator": ">="
+                        },
+                        "fontColor": "#FB8C00"
+                      }
+                    ]
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "fields": [],
+                  "value": "Power Factor"
+                }
+              },
+              "version": 2,
+              "widgetType": "counter"
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#11181C"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "voltage_trends",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "silver_telemetry",
+                  "fields": [
+                    {
+                      "name": "measurement_name",
+                      "expression": "`measurement_name`"
+                    },
+                    {
+                      "name": "measurement_time",
+                      "expression": "`measurement_time`"
+                    },
+                    {
+                      "name": "avg(measurement_value)",
+                      "expression": "AVG(`measurement_value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`measurement_name` IN ('voltage_r', 'voltage_y', 'voltage_b')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "data": {
+                "queryName": "main_query"
+              },
+              "encodings": {
+                "color": {
+                  "fieldName": "measurement_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "x": {
+                  "fieldName": "measurement_time",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(measurement_value)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "fields": [],
+                  "value": "Voltage Trends"
+                }
+              },
+              "version": 3,
+              "widgetType": "line"
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 12,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "current_trends",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "silver_telemetry",
+                  "fields": [
+                    {
+                      "name": "measurement_name",
+                      "expression": "`measurement_name`"
+                    },
+                    {
+                      "name": "measurement_time",
+                      "expression": "`measurement_time`"
+                    },
+                    {
+                      "name": "avg(measurement_value)",
+                      "expression": "AVG(`measurement_value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`measurement_name` IN ('current_r', 'current_y', 'current_b')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "data": {
+                "queryName": "main_query"
+              },
+              "encodings": {
+                "color": {
+                  "fieldName": "measurement_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "x": {
+                  "fieldName": "measurement_time",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(measurement_value)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "fields": [],
+                  "value": "Current Trends"
+                }
+              },
+              "version": 3,
+              "widgetType": "line"
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 12,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "power_trends",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "silver_telemetry",
+                  "fields": [
+                    {
+                      "name": "measurement_name",
+                      "expression": "`measurement_name`"
+                    },
+                    {
+                      "name": "measurement_time",
+                      "expression": "`measurement_time`"
+                    },
+                    {
+                      "name": "avg(measurement_value)",
+                      "expression": "AVG(`measurement_value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`measurement_name` IN ('active_power_kw', 'reactive_power_kvar', 'apparent_power_kva')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "data": {
+                "queryName": "main_query"
+              },
+              "encodings": {
+                "color": {
+                  "fieldName": "measurement_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "x": {
+                  "fieldName": "measurement_time",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(measurement_value)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Power Trends"
+              },
+              "version": 3,
+              "widgetType": "line"
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 10,
+            "width": 12,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "frequency_trends",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "silver_telemetry",
+                  "fields": [
+                    {
+                      "name": "measurement_name",
+                      "expression": "`measurement_name`"
+                    },
+                    {
+                      "name": "measurement_time",
+                      "expression": "`measurement_time`"
+                    },
+                    {
+                      "name": "avg(measurement_value)",
+                      "expression": "AVG(`measurement_value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`measurement_name` IN ('frequency_hz')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "data": {
+                "queryName": "main_query"
+              },
+              "encodings": {
+                "color": {
+                  "fieldName": "measurement_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "x": {
+                  "fieldName": "measurement_time",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(measurement_value)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "fields": [],
+                  "value": "Frequency (Hz)"
+                }
+              },
+              "version": 3,
+              "widgetType": "line"
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 18,
+            "width": 12,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "energy_consumption",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "silver_telemetry",
+                  "fields": [
+                    {
+                      "name": "measurement_name",
+                      "expression": "`measurement_name`"
+                    },
+                    {
+                      "name": "measurement_time",
+                      "expression": "`measurement_time`"
+                    },
+                    {
+                      "name": "avg(measurement_value)",
+                      "expression": "AVG(`measurement_value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`measurement_name` IN ('energy_kwh')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "data": {
+                "queryName": "main_query"
+              },
+              "encodings": {
+                "color": {
+                  "fieldName": "measurement_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "x": {
+                  "fieldName": "measurement_time",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(measurement_value)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Energy Consumption (kWh)"
+              },
+              "version": 3,
+              "widgetType": "line"
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 12,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "temperature_trends",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "silver_telemetry",
+                  "fields": [
+                    {
+                      "name": "measurement_name",
+                      "expression": "`measurement_name`"
+                    },
+                    {
+                      "name": "measurement_time",
+                      "expression": "`measurement_time`"
+                    },
+                    {
+                      "name": "avg(measurement_value)",
+                      "expression": "AVG(`measurement_value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`measurement_name` IN ('temperature_c')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "data": {
+                "queryName": "main_query"
+              },
+              "encodings": {
+                "color": {
+                  "fieldName": "measurement_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "x": {
+                  "fieldName": "measurement_time",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(measurement_value)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Temperature (°C)"
+              },
+              "version": 3,
+              "widgetType": "line"
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 25,
+            "width": 12,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "thd_trends",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "silver_telemetry",
+                  "fields": [
+                    {
+                      "name": "measurement_name",
+                      "expression": "`measurement_name`"
+                    },
+                    {
+                      "name": "measurement_time",
+                      "expression": "`measurement_time`"
+                    },
+                    {
+                      "name": "avg(measurement_value)",
+                      "expression": "AVG(`measurement_value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`measurement_name` IN ('thd_voltage', 'thd_current')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "data": {
+                "queryName": "main_query"
+              },
+              "encodings": {
+                "color": {
+                  "fieldName": "measurement_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "x": {
+                  "fieldName": "measurement_time",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(measurement_value)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "THD Trends"
+              },
+              "version": 3,
+              "widgetType": "line"
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 21,
+            "width": 12,
+            "height": 4
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}

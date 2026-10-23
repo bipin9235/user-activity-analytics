@@ -1,7 +1,7 @@
 resources:
   jobs:
     ingest_kafka_event_bronze:
-      name: "${bundle.target}-ingest-kafka-event-bronze-and-silver"
+      name: "${bundle.target}-ingest-kafka-event-bronze-and-silver-layer"
 
       trigger:
         periodic:
@@ -9,7 +9,7 @@ resources:
           unit: HOURS
 
       tasks:
-        - task_key: ingest-kafka-events-bronze
+        - task_key: ingest-kafka-events-to-bronze-layer
 
           notebook_task:
             notebook_path: ../notebooks/ingest-kafka-events-bronze.ipynb
@@ -25,11 +25,14 @@ resources:
               schema_registry_url: ${var.schema_registry_url}
               log_level: ${var.log_level}
               audit_table_name: ${var.audit_table_name}
+              job_name: "${bundle.target}-ingest-kafka-event-bronze-and-silver"
+              task_name: ingest-kafka-events-to-bronze-layer
+              run_id: "{{job.run_id}}"
           environment_key: default
 
-        - task_key: telemetry-bronze-to-silver
+        - task_key: load-bronze-to-silver-layer
           depends_on:
-            - task_key: ingest-kafka-events-bronze
+            - task_key: ingest-kafka-events-to-bronze-layer
           notebook_task:
             notebook_path: ../notebooks/telemetry-bronze-to-silver.ipynb
             base_parameters:
@@ -38,6 +41,9 @@ resources:
               silver_table_name: ${var.silver_table_name}
               log_level: ${var.log_level}
               audit_table_name: ${var.audit_table_name}
+              job_name: "${bundle.target}-ingest-kafka-event-bronze-and-silver"
+              task_name: load-bronze-to-silver-layer
+              run_id: "{{job.run_id}}"
           environment_key: default
 
       environments:
@@ -45,6 +51,7 @@ resources:
           spec:
             environment_version: '6'
             dependencies:
+              - confluent-kafka[avro]
               - ${workspace.artifact_path}/.internal/analytical_pipeline-0.0.1-py3-none-any.whl
 
       notification_settings:

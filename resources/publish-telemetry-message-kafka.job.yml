@@ -24,6 +24,7 @@ resources:
               task_name: publish-telemetry-to-kafka
               duration_in_hours: '12'
               number_of_events_per_hour: '4'
+              run_id: "{{job.run_id}}"
           environment_key: default
 
       environments:
@@ -31,6 +32,7 @@ resources:
           spec:
             environment_version: '6'
             dependencies:
+              - confluent-kafka[avro]
               - ${workspace.artifact_path}/.internal/analytical_pipeline-0.0.1-py3-none-any.whl
       notification_settings:
         no_alert_for_skipped_runs: true
